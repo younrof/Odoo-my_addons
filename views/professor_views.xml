@@ -1,0 +1,153 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="professor_list_view">
+      <field name="name">Professor list</field>
+      <field name="model">university.professor</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="f_name"/>
+          <field name="l_name"/>
+          <field name="sexe"/>
+          <field name="identity_card"/>
+          <field name="birthday"/>
+          <field name="start_date"/>
+          <field name="state" widget="badge" decoration-danger="state == 'cancel'" decoration-info="state == 'draft'" decoration-success="state == 'confirm'"/>
+        </tree>
+      </field>
+    </record>
+
+     <!-- explicit form view definition -->
+
+    <record model="ir.ui.view" id="professor_form_view">
+      <field name="name">Professor form</field>
+      <field name="model">university.professor</field>
+      <field name="arch" type="xml">
+        <form string="Professor Form">
+          <header>
+            <button name="btn_draft" string="Set to draft" class="oe_highlight" states="confirm, cancel" type="object" />
+            <button name="btn_confirm" string="Confirm" class="oe_highlight" states="draft" type="object" />
+            <button name="btn_cancel" string="Cancel" class="oe_highlight" states="confirm" type="object" />
+            <field name="state" widget="statusbar"/>
+          </header>
+          <sheet>
+            <field name="image_1920" widget="image" class="oe_avatar"/>
+            <div class="oe_title" modifiers="{}">
+			  <label class="oe_edit_only" for="name" string="First Name" modifiers="{}"/>
+			  <h1 modifiers="{}">
+				  <field name="f_name" placeholder="First Name" modifiers="{'required':true}" id="name" required="1"/>
+			  </h1>
+		    </div>
+            <group>
+             <group>
+                <field name="l_name"/>
+                <field name="sexe"/>
+                <field name="identity_card"/>
+                <field name="adresse"/>
+                <field name="department_id"/>
+              </group>
+              <group>
+                <field name="birthday"/>
+                <field name="start_date" required="1"/>
+                <field name="email"/>
+                <field name="phone" placeholder="Number phone"/>
+                <field name="subject_id"/>
+              </group>
+            </group>
+            <notebook>
+              <page string="List of classrooms">
+                <field name="classroom_ids"/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <!--<record model="ir.ui.view" id="student_form_view">
+      <field name="name">Student form</field>
+      <field name="model">university.student</field>
+      <field name="arch" type="xml">
+            <form string="Consumption unit form">
+                <sheet>
+                    <group colspan="4" col="4">
+                        <group colspan="2">
+                            <field name="f_name"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="l_name"/>
+                            <field name="sexe"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                                <form editable="top">
+                                    <field name="identity_card"/>
+                                    <field name="adresse"/>
+                                    <field name="birthday"/>
+                                    <field name="registration_date" required="1"/>
+                                    <field name="email"/>
+                                    <field name="phone"/>
+                                </form>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>-->
+
+    <record id="professor_search_form_view" model="ir.ui.view">
+      <field name="name">professor_search</field>
+      <field name="model">university.professor</field>
+      <field name="arch" type="xml">
+        <search string="Students">
+          <field name="f_name" string="nom"/>
+          <field name="l_name" string="prenom"/>
+          <field name="sexe"/>
+        </search>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="professor_action_window">
+      <field name="name">Professor window</field>
+      <field name="res_model">university.professor</field>
+      <field name="view_mode">search,tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="university.action_server">
+      <field name="name">university server</field>
+      <field name="model_id" ref="model_university_university"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="University" id="university.menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Professor" id="university_professor_cat" parent="university.menu_root"/>
+    <!--<menuitem name="Menu 2" id="university.menu_2" parent="university.menu_root"/>-->
+
+    <!-- actions -->
+
+    <menuitem name="List of professor" id="university_professor_list" parent="university_professor_cat"
+              action="professor_action_window"/>
+   <!-- <menuitem name="Server to list" id="university" parent="university.menu_2"
+              action="university.action_server"/>
+-->
+  </data>
+</odoo>
